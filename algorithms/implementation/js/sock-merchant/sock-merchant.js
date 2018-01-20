@@ -23,18 +23,18 @@ function readLine() {
 function sockMerchant(n, ar) {
     const found = new Set();
     return ar.reduce((total, sock1, i) => {
-        if (i >= n || found.has(i)) return total;
+        if (found.has(i) || i >= n) return total;
 
-        return ar.slice(i+1).reduce((total, sock2, j) => {
-            if (j >= n || found.has(i) || found.has(j)) return total;
+        return total + ar.reduce((increment, sock2, j) => {
+            if (found.has(i) || j <= i || j >= n || found.has(j)) return increment;
 
             if (sock1 === sock2) {
                 found.add(i);
                 found.add(j);
-                return total + 1;
+                return 1;
             }
 
-            return total;
+            return increment;
         }, 0)
     }, 0)
 }
